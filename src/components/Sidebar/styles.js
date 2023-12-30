@@ -1,19 +1,22 @@
 // import { Box, styled } from '@mui/material';
 
-// export const LinkContainer = styled(Box)(({ theme }) => ({
-// 	display: 'flex',
-// 	justifyContent: 'center',
-// 	padding: '10% 0',
-// 	'& img': {
-// 		width: '70%',
-// 	},
-// }));
+import { styled, Box } from "@mui/material";
+import { Link } from "react-router-dom";
 
-// export const StyledLink = styled(Box)(({ theme }) => ({
-// 	color: theme.palette.text.primary,
-// 	textDecoration: 'none',
-// }));
-// export const GenreImg = styled('img')(({ theme }) => ({
-// 	filter: theme.palette.mode === 'dark' && 'invert(1)',
-// 	height: '30px',
-// }));
+export const LinkContainer = styled(Link)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  padding: "10% 0",
+  "& img": {
+    width: "70%",
+  },
+}));
+
+export const StyledLink = styled(Box)(({ theme }) => ({
+  color: theme.palette.text.primary,
+  textDecoration: "none",
+}));
+export const GenreImg = styled('img')(({ theme }) => ({
+	filter: theme.palette.mode === 'dark' && 'invert(1)',
+	height: '30px',
+}));

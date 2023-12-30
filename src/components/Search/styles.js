@@ -8,7 +8,7 @@ export const Container = styled('div')(({ theme }) => ({
 	},
 }));
 
-export const CssTextField = styled(TextField)(({ theme }) => ({
+export const SearchBox = styled(TextField)(({ theme }) => ({
 	'& .MuiInput-root': {
 		color: theme.palette.mode === 'light' && 'black',
 		filter: theme.palette.mode === 'light' && 'invert(1)',
