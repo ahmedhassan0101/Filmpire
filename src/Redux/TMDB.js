@@ -13,7 +13,6 @@ export const tmdbApi = createApi({
     }),
     getMovies: builder.query({
       query: ({ categoryName, page, searchQuery }) => {
-        console.log(searchQuery)
         //![1]  Get Search Result
         if (searchQuery) {
           return `/search/movie?query=${searchQuery}&page=${page}&api_key=${tmdbApiKey}`;
