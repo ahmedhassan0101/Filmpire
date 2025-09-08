@@ -26,6 +26,7 @@ export interface Movie {
   backdrop_path: string | null;
   release_date: string;
   vote_average: number;
+  vote_count: number;
   genre_ids: number[];
 }
 
@@ -138,18 +139,4 @@ export interface UserListParams {
   page?: number;
 }
 
-// Store Types
-export interface AuthState {
-  user: User | null;
-  isAuthenticated: boolean;
-  sessionId: string | null;
-  accountId: string | null;
-}
 
-export interface MoviesState {
-  genreIdOrCategoryName: string | number | null;
-  page: number;
-  searchQuery: string;
-}
-
-// Error Types

@@ -7,7 +7,7 @@ import type {
   MoviesByActorParams,
   UserListParams
 } from '@/types';
-import { useAuthStore } from '../store';
+import { useAuthStore } from '@/store/auth-store';
 
 // Query Keys
 export const queryKeys = {
