@@ -1,4 +1,6 @@
-import { useMoviesStore } from "@/store";
+
+
+import { useMoviesStore } from "@/store/movies-store";
 
 
 export default function SearchBar() {

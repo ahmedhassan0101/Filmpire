@@ -2,15 +2,14 @@
 
 import { useMoviesStore } from "@/store/movies-store";
 
-
 export default function CategoriesBar() {
   const { genreIdOrCategoryName, setGenreOrCategory } = useMoviesStore();
 
   const categories = [
-    { value: 'popular', label: 'Popular' },
-    { value: 'top_rated', label: 'Top Rated' },
-    { value: 'upcoming', label: 'Upcoming' },
-    { value: 'now_playing', label: 'Now Playing' },
+    { value: "popular", label: "Popular" },
+    { value: "top_rated", label: "Top Rated" },
+    { value: "upcoming", label: "Upcoming" },
+    { value: "now_playing", label: "Now Playing" },
   ];
 
   return (
@@ -23,8 +22,8 @@ export default function CategoriesBar() {
             onClick={() => setGenreOrCategory(category.value)}
             className={`px-3 py-1 rounded ${
               genreIdOrCategoryName === category.value
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-200 text-gray-700'
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-700"
             }`}
           >
             {category.label}

@@ -1,5 +1,5 @@
 import { useGenres } from "@/hooks/queries";
-import { useMoviesStore } from "@/store";
+import { useMoviesStore } from "@/store/movies-store";
 
 export default function GenresList() {
   const { data: genres, isLoading, error } = useGenres();
