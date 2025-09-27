@@ -68,3 +68,4 @@ export const useMoviesStore = create<MoviesStore>()(
     { name: "movies-store" }
   )
 );
+
