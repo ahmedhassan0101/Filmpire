@@ -1,7 +1,4 @@
-
-
 import { useMoviesStore } from "@/store/movies-store";
-
 
 export default function SearchBar() {
   const { searchQuery, setSearchQuery } = useMoviesStore();
