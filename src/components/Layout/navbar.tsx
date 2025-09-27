@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Search from "./search";
-import { ModeToggle } from "../mode-toggle";
+import ModeToggle from "./mode-toggle";
 import SidebarContent from "./sidebar-content";
 
 export default function Navbar() {

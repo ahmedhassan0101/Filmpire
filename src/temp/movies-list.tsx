@@ -1,6 +1,7 @@
 import { useMovies } from "@/hooks/queries";
-import { useMoviesStore } from "@/store";
+// import { useMoviesStore } from "@/store";
 import { MovieCard } from "./movie-card";
+import { useMoviesStore } from "@/store/movies-store";
 
 export default function MoviesList() {
   const { genreIdOrCategoryName, page, searchQuery } = useMoviesStore();

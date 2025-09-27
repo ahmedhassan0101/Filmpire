@@ -1,5 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
-import { useAuthStore } from "@/store";
+import { useAuthStore } from "@/store/auth-store";
+
 
 export default function AuthSection() {
   const { user, isAuthenticated } = useAuthStore();
