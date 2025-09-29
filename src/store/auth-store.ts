@@ -1,18 +1,20 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import type { User } from "@/types";
-import { authUtils } from "../utils/auth";
 
 interface AuthStore {
   user: User | null;
   isAuthenticated: boolean;
   sessionId: string | null;
   accountId: string | null;
+  requestToken: string | null;
+
   setUser: (user: User) => void;
   setAuthenticated: (isAuth: boolean) => void;
   setSessionId: (sessionId: string) => void;
+  setRequestToken: (token: string) => void;
+  clearRequestToken: () => void;
   logout: () => void;
-  initializeAuth: () => void;
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -23,9 +25,9 @@ export const useAuthStore = create<AuthStore>()(
         isAuthenticated: false,
         sessionId: null,
         accountId: null,
+        requestToken: null,
 
         setUser: (user: User) => {
-          authUtils.setAccountId(user.id.toString());
           set({
             user,
             isAuthenticated: true,
@@ -38,31 +40,22 @@ export const useAuthStore = create<AuthStore>()(
         },
 
         setSessionId: (sessionId: string) => {
-          authUtils.setSessionId(sessionId);
           set({ sessionId, isAuthenticated: true });
         },
-
+        setRequestToken: (requestToken: string) => {
+          set({ requestToken });
+        },
+        clearRequestToken: () => {
+          set({ requestToken: null });
+        },
         logout: () => {
-          authUtils.clearAuth();
           set({
             user: null,
             isAuthenticated: false,
             sessionId: null,
             accountId: null,
+            requestToken: null,
           });
-        },
-
-        initializeAuth: () => {
-          const sessionId = authUtils.getSessionId();
-          const accountId = authUtils.getAccountId();
-
-          if (sessionId) {
-            set({
-              isAuthenticated: true,
-              sessionId,
-              accountId,
-            });
-          }
         },
       }),
       {
@@ -70,7 +63,14 @@ export const useAuthStore = create<AuthStore>()(
         partialize: (state) => ({
           isAuthenticated: state.isAuthenticated,
           accountId: state.accountId,
+          sessionId: state.sessionId,
+          requestToken: state.requestToken,
         }),
+        onRehydrateStorage: () => (state) => {
+          if (state?.sessionId && state?.accountId) {
+            state.isAuthenticated = true;
+          }
+        },
       }
     ),
     { name: "auth-store" }

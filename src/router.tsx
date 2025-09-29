@@ -1,7 +1,7 @@
 // filmpire\src\router.tsx
 import { createBrowserRouter } from "react-router-dom";
 
-import { Movies, MovieInfo, Actors, Profile } from "./pages";
+import { Movies, MovieInfo, Actors, Profile, ApprovedPage } from "./pages";
 import { RootLayout } from "./components";
 
 export const router = createBrowserRouter([
@@ -10,7 +10,6 @@ export const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <Movies /> },
-      { path: "approved", element: <Movies /> },
       { path: "genre/:id", element: <Movies /> },
       { path: "actors/:id", element: <Actors /> },
       { path: "movie/:id", element: <MovieInfo /> },
@@ -18,4 +17,5 @@ export const router = createBrowserRouter([
       { path: "categories/:id", element: <Movies /> },
     ],
   },
+  { path: "/approved", element: <ApprovedPage /> },
 ]);

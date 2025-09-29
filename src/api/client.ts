@@ -1,8 +1,9 @@
 // src/api/client.ts
+import { useAuthStore } from "@/store/auth-store";
 import axios, {
   type AxiosInstance,
   type AxiosResponse,
-  type InternalAxiosRequestConfig, // ✅ Fix TS error
+  type InternalAxiosRequestConfig, 
 } from "axios";
 
 const API_KEY = import.meta.env.VITE_TMDB_KEY;
@@ -28,15 +29,21 @@ const apiClient: AxiosInstance = axios.create({
 // Request interceptor
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-    // automatically add session_id if endpoint requires authentication
-    const sessionId = localStorage.getItem("session_id");
-    if (sessionId && config.url?.includes("/account/")) {
-      config.params = {
-        ...config.params,
-        session_id: sessionId,
-      };
-    }
+    // const sessionId = authUtils.getSessionId();
+    const sessionId = useAuthStore.getState().sessionId;
+    if (sessionId) {
+      // Add session_id to requests that need authentication
+      const needsAuth = ["/account", "/favorite", "/watchlist", "/rated"].some(
+        (path) => config.url?.includes(path)
+      );
 
+      if (needsAuth) {
+        config.params = {
+          ...config.params,
+          session_id: sessionId,
+        };
+      }
+    }
     return config;
   },
   (error) => Promise.reject(error)
@@ -59,11 +66,12 @@ apiClient.interceptors.response.use(
 
     // auto-clear session if unauthorized (401)
     if (error.response?.status === 401) {
-      localStorage.removeItem("session_id");
-      localStorage.removeItem("account_id");
-      localStorage.removeItem("request_token");
+      useAuthStore.getState().logout();
+      // Redirect to home if not already there
+      if (window.location.pathname !== "/") {
+        window.location.href = "/";
+      }
     }
-
     // always reject with standardized error
     return Promise.reject(apiError);
   }
