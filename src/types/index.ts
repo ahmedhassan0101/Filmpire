@@ -94,6 +94,9 @@ export interface User {
   id: number;
   username: string;
   name: string;
+  include_adult: boolean;
+  iso_639_1: string;
+  iso_3166_1: string;
   avatar?: {
     gravatar?: {
       hash: string;
@@ -115,6 +118,13 @@ export interface SessionResponse {
   success: boolean;
 }
 
+export interface AuthState {
+  user: User | null;
+  isAuthenticated: boolean;
+  sessionId: string | null;
+  accountId: string | null;
+}
+
 // Query Parameters Types
 export interface MoviesQueryParams {
   genreIdOrCategoryName?: string | number;
@@ -124,7 +134,7 @@ export interface MoviesQueryParams {
 
 export interface RecommendationsParams {
   movie_id: number;
-  list: 'recommendations' | 'similar';
+  list: "recommendations" | "similar";
 }
 
 export interface MoviesByActorParams {
@@ -133,10 +143,8 @@ export interface MoviesByActorParams {
 }
 
 export interface UserListParams {
-  listName: 'watchlist' | 'favorite';
+  listName: "watchlist" | "favorite";
   accountId: string;
   sessionId: string;
   page?: number;
 }
-
-

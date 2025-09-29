@@ -1,15 +1,14 @@
 // src/hooks/useAuth.ts
-import { useCallback } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../store";
+import { useCallback, useEffect } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchToken, createSessionId } from "../utils/auth";
 import { tmdbApi } from "../api/endpoints";
 import type { User } from "@/types";
+import { useAuthStore } from "@/store/auth-store";
 
 export const useAuth = () => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
+
   const {
     user,
     isAuthenticated,
@@ -18,7 +17,24 @@ export const useAuth = () => {
     logout: logoutStore,
   } = useAuthStore();
 
-  // Login mutation
+  const {
+    data: userData,
+    isLoading: isLoadingUser,
+    error: userError,
+  } = useQuery<User>({
+    queryKey: ["user", useAuthStore.getState().sessionId],
+    queryFn: async () => {
+      const sessionId = useAuthStore.getState().sessionId;
+      if (!sessionId) throw new Error("No session ID");
+
+      const user = await tmdbApi.getAccountDetails();
+      return user;
+    },
+    enabled: isAuthenticated && !user,
+    retry: 1,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+  });
   const loginMutation = useMutation({
     mutationFn: fetchToken,
     onError: (error) => {
@@ -26,57 +42,54 @@ export const useAuth = () => {
     },
   });
 
-  // Create session mutation
-  const createSessionMutation = useMutation({
-    mutationFn: createSessionId,
-    onSuccess: async (sessionId: string) => {
-      setSessionId(sessionId);
-
-      // Fetch user details after session creation
-      try {
-        const userDetails: User = await tmdbApi.getAccountDetails();
-        setUser(userDetails);
-        navigate("/"); // Redirect to home after successful login
-      } catch (error) {
-        console.error("Failed to fetch user details:", error);
-      }
-    },
-    onError: (error) => {
-      console.error("Session creation failed:", error);
-    },
-  });
-
-  // Logout function
-  const logout = useCallback(() => {
-    logoutStore();
-    queryClient.clear(); // Clear all cached data
-    navigate("/");
-  }, [logoutStore, queryClient, navigate]);
-
-  // Login function
   const login = useCallback(() => {
     loginMutation.mutate();
   }, [loginMutation]);
 
-  // Create session function (called after redirect from TMDB)
-  const completeAuth = useCallback(() => {
-    createSessionMutation.mutate();
-  }, [createSessionMutation]);
+  const logout = useCallback(() => {
+    logoutStore();
+    queryClient.clear();
+    window.location.href = "/";
+  }, [logoutStore, queryClient]);
+
+  useEffect(() => {
+    if (userError && isAuthenticated) {
+      console.error("Failed to fetch user, logging out...");
+      logout();
+    }
+  }, [userError, isAuthenticated, logout]);
+
+  useEffect(() => {
+    if (userData && !user) {
+      setUser(userData);
+    }
+  }, [userData, user, setUser]);
+
+  const createSessionMutation = useMutation({
+    mutationFn: createSessionId,
+    onSuccess: async (sessionId: string) => {
+      setSessionId(sessionId);
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
+    onError: (error) => {
+      console.error("Session creation failed:", error);
+      logoutStore();
+    },
+  });
 
   return {
-    // State
+    // state
     user,
     isAuthenticated,
-    isLoggingIn: loginMutation.isPending,
-    isCreatingSession: createSessionMutation.isPending,
+    isLoggingIn: loginMutation.isPending || createSessionMutation.isPending,
+    isLoadingUser,
 
-    // Actions
+    // actions
     login,
     logout,
-    completeAuth,
+    createSession: () => createSessionMutation.mutate(),
 
-    // Errors
-    loginError: loginMutation.error,
-    sessionError: createSessionMutation.error,
+    // errors
+    loginError: loginMutation.error || createSessionMutation.error,
   };
 };

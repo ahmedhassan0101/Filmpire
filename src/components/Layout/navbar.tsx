@@ -1,29 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, UserCircle } from "lucide-react";
+import { Loader2, Menu, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Search from "./search";
 import ModeToggle from "./mode-toggle";
 import SidebarContent from "./sidebar-content";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [isAuthenticated, _setIsAuthenticated] = useState(false);
-  const [user, _setUser] = useState<any>(null);
 
-  // Your authentication logic will go here later
-  useEffect(() => {
-    // Add your auth logic here
-  }, []);
+  const { user, isAuthenticated, login, logout, isLoggingIn, loginError } =
+    useAuth();
 
-  const handleLogin = () => {
-    // Add your login logic here
-    console.log("Login clicked");
-  };
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
@@ -76,30 +67,57 @@ export default function Navbar() {
             <Button
               variant="default"
               size="sm"
-              onClick={handleLogin}
+              onClick={login}
+              disabled={isLoggingIn}
               className="hidden sm:inline-flex"
             >
-              <UserCircle className="w-4 h-4 mr-2" />
-              Login
+              {isLoggingIn ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Logging in...
+                </>
+              ) : (
+                <>
+                  <UserCircle className="w-4 h-4 mr-2" />
+                  Login
+                </>
+              )}
             </Button>
           ) : (
-            <Link to={`/profile/${user?.id}`}>
-              <Button variant="ghost" size="sm" className="gap-2">
-                <span className="hidden sm:inline">My Movies</span>
-                <Avatar className="w-8 h-8">
-                  <AvatarImage
-                    src={
-                      user?.avatar?.tmdb?.avatar?.avatar_path
-                        ? `https://www.themoviedb.org/t/p/w64_and_h64_face${user.avatar.tmdb.avatar.avatar_path}`
-                        : undefined
-                    }
-                  />
-                  <AvatarFallback>
-                    <UserCircle className="w-5 h-5" />
-                  </AvatarFallback>
-                </Avatar>
+            <div className="flex items-center gap-2">
+              {/* Logout button (optional) */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={logout}
+                className="hidden md:inline-flex text-xs"
+              >
+                Logout
               </Button>
-            </Link>
+              <Link to={`/profile/${user?.id}`}>
+                <Button variant="ghost" size="sm" className="gap-2">
+                  <span className="hidden sm:inline">My Movies</span>
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage
+                      src={
+                        user?.avatar?.tmdb?.avatar_path
+                          ? `https://www.themoviedb.org/t/p/w64_and_h64_face${user.avatar.tmdb.avatar_path}`
+                          : undefined
+                      }
+                    />
+                    <AvatarFallback>
+                      <UserCircle className="w-5 h-5" />
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </Link>
+            </div>
+          )}
+          {/* Show login error if any */}
+          {loginError && (
+            <div className="absolute top-full left-0 right-0 bg-destructive text-destructive-foreground text-sm p-2 text-center">
+              Login failed. Please try again.
+            </div>
           )}
         </div>
       </nav>

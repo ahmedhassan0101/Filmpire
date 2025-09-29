@@ -70,9 +70,8 @@ export const tmdbApi = {
     }),
 
   // Get user account details
-  getAccountDetails: (): Promise<User> => apiClient.get("/account"),
+  getAccountDetails: (): Promise<User> => apiClient.get(`/account`),
 
-  // Get user specific lists (watchlist, favorites)
   getUserList: (params: UserListParams): Promise<MoviesResponse> =>
     apiClient.get(`/account/${params.accountId}/${params.listName}`, {
       params: { page: params.page || 1 },

@@ -2,8 +2,8 @@
 import React, { useEffect } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useAuthStore } from "./store";
-import { useAuth } from "./hooks/useAuth";
+import { useAuthStore } from "@/store/auth-store";
+import { useAuth } from "@/hooks/useAuth";
 
 // Auth initializer
 const AuthInitializer: React.FC<{ children: React.ReactNode }> = ({
@@ -17,6 +17,7 @@ const AuthInitializer: React.FC<{ children: React.ReactNode }> = ({
 
   return <>{children}</>;
 };
+
 
 // Approved page (after TMDB redirect)
 const ApprovedPage: React.FC = () => {
