@@ -35,10 +35,10 @@ export const useMovies = (params: MoviesQueryParams) => {
 };
 
 // Single Movie Query
-export const useMovie = (id: number) => {
+export const useMovie = (id: string | undefined) => {
   return useQuery({
     queryKey: ["movie", id] as const,
-    queryFn: () => tmdbApi.getMovie(id),
+    queryFn: () => tmdbApi.getMovie(id!),
     staleTime: 1000 * 60 * 30, // 30 minutes
     gcTime: 1000 * 60 * 60 * 2, // 2 hours
     retry: 2,
@@ -129,6 +129,9 @@ export const useAddToWatchlist = () => {
         queryKey: ["userList"],
       });
     },
+    onError: (error) => {
+      console.error("Error updating watchlist:", error);
+    },
   });
 };
 
@@ -149,6 +152,10 @@ export const useAddToFavorites = () => {
       queryClient.invalidateQueries({
         queryKey: ["userList"],
       });
+    },
+
+    onError: (error) => {
+      console.error("Error updating watchlist:", error);
     },
   });
 };

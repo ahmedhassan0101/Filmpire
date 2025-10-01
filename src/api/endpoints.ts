@@ -49,11 +49,10 @@ export const tmdbApi = {
   },
 
   // Get single movie details
-  getMovie: (id: number): Promise<MovieDetails> =>
+  getMovie: (id: string): Promise<MovieDetails> =>
     apiClient.get(`/movie/${id}`, {
       params: { append_to_response: "videos,credits" },
     }),
-
   // Get recommendations or similar movies
   getRecommendations: (
     params: RecommendationsParams
@@ -73,7 +72,7 @@ export const tmdbApi = {
   getAccountDetails: (): Promise<User> => apiClient.get(`/account`),
 
   getUserList: (params: UserListParams): Promise<MoviesResponse> =>
-    apiClient.get(`/account/${params.accountId}/${params.listName}`, {
+    apiClient.get(`/account/${params.accountId}/${params.listName}/movies`, {
       params: { page: params.page || 1 },
     }),
 
