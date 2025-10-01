@@ -35,6 +35,7 @@ export const useAuth = () => {
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
   });
+  
   const loginMutation = useMutation({
     mutationFn: fetchToken,
     onError: (error) => {

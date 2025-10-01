@@ -28,6 +28,7 @@ export interface Movie {
   vote_average: number;
   vote_count: number;
   genre_ids: number[];
+  popularity: number;
 }
 
 export interface MovieDetails extends Movie {
@@ -37,6 +38,19 @@ export interface MovieDetails extends Movie {
   genres: Genre[];
   videos?: VideosResponse;
   credits?: CreditsResponse;
+  original_title: string;
+  tagline: string;
+  status: string;
+  production_companies: {
+    id: number;
+    logo_path: string;
+    name: string;
+    origin_country: string;
+  }[];
+  production_countries: {
+    iso_3166_1: string;
+    name: string;
+  }[];
 }
 
 export interface MoviesResponse {
@@ -144,7 +158,7 @@ export interface MoviesByActorParams {
 
 export interface UserListParams {
   listName: "watchlist" | "favorite";
-  accountId: string;
-  sessionId: string;
+  accountId?: string;
+  sessionId?: string;
   page?: number;
 }
