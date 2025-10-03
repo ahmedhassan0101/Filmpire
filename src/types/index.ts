@@ -29,18 +29,12 @@ export interface Movie {
   vote_count: number;
   genre_ids: number[];
   popularity: number;
-}
-
-export interface MovieDetails extends Movie {
   runtime: number;
   budget: number;
   revenue: number;
   genres: Genre[];
-  videos?: VideosResponse;
-  credits?: CreditsResponse;
   original_title: string;
   tagline: string;
-  status: string;
   production_companies: {
     id: number;
     logo_path: string;
@@ -51,6 +45,12 @@ export interface MovieDetails extends Movie {
     iso_3166_1: string;
     name: string;
   }[];
+  status: string;
+}
+
+export interface MovieDetails extends Movie {
+  videos?: VideosResponse;
+  credits?: CreditsResponse;
 }
 
 export interface MoviesResponse {
@@ -101,6 +101,10 @@ export interface Person {
   birthday: string | null;
   place_of_birth: string | null;
   profile_path: string | null;
+  known_for_department: string;
+  imdb_id: string | null;
+  popularity: number;
+  also_known_as: string[];
 }
 
 // Auth Types
@@ -152,7 +156,7 @@ export interface RecommendationsParams {
 }
 
 export interface MoviesByActorParams {
-  id: number;
+  id: string;
   page?: number;
 }
 

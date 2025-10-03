@@ -60,7 +60,7 @@ export const tmdbApi = {
     apiClient.get(`/movie/${params.movie_id}/${params.list}`),
 
   // Get actor details
-  getActor: (id: number): Promise<Person> => apiClient.get(`/person/${id}`),
+  getActor: (id: string): Promise<Person> => apiClient.get(`/person/${id}`),
 
   // Get movies by actor
   getMoviesByActorId: (params: MoviesByActorParams): Promise<MoviesResponse> =>
