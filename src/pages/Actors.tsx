@@ -83,7 +83,7 @@ export default function Actors() {
           <div className="grid lg:grid-cols-[350px_1fr] gap-8 lg:gap-12 mb-12">
             {/* Profile Image */}
             <div className="flex justify-center lg:justify-start">
-              <div className="relative group">
+              <div className="relative group h-fit" >
                 <div className="w-full max-w-sm aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl ring-1 ring-slate-300 dark:ring-white/10">
                   {actor.profile_path ? (
                     <img
