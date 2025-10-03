@@ -2,7 +2,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./navbar";
 import Sidebar from "./sidebar";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 import { useMoviesStore } from "@/store/movies-store";
 import { useEffect } from "react";
 
