@@ -59,7 +59,7 @@ export const useRecommendations = (params: RecommendationsParams) => {
 };
 
 // Actor Query
-export const useActor = (id: number) => {
+export const useActor = (id: string) => {
   return useQuery({
     queryKey: ["actor", id] as const,
     queryFn: () => tmdbApi.getActor(id),

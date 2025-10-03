@@ -282,34 +282,33 @@ export default function MovieInfo() {
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {movie.credits.cast.slice(0, 6).map((person: any) => (
-                <Card
-                  key={person.id}
-                  className="bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 overflow-hidden transition-colors"
-                >
-                  <CardContent className="p-0">
-                    <div className="aspect-[2/3] bg-slate-100 dark:bg-slate-800">
-                      {person.profile_path ? (
-                        <img
-                          src={`https://image.tmdb.org/t/p/w200${person.profile_path}`}
-                          alt={person.name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <Users className="w-12 h-12 text-slate-600" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-3">
-                      <p className="font-semibold text-sm text-slate-900 dark:text-white truncate">
-                        {person.name}
-                      </p>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 truncate">
-                        {person.character}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
+                <Link key={person.id} to={`/actors/${person.id}`} className="block cursor-pointer">
+                  <Card className="bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 overflow-hidden transition-colors">
+                    <CardContent className="p-0">
+                      <div className="aspect-[2/3] bg-slate-100 dark:bg-slate-800">
+                        {person.profile_path ? (
+                          <img
+                            src={`https://image.tmdb.org/t/p/w200${person.profile_path}`}
+                            alt={person.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <Users className="w-12 h-12 text-slate-600" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-3">
+                        <p className="font-semibold text-sm text-slate-900 dark:text-white truncate">
+                          {person.name}
+                        </p>
+                        <p className="text-xs text-slate-600 dark:text-slate-400 truncate">
+                          {person.character}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </div>
           </section>
