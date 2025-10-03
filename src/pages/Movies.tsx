@@ -1,6 +1,7 @@
-import MoviesPage from "@/components/movies";
 import { Film, Sparkles, TrendingUp } from "lucide-react";
+import { lazy } from "react";
 
+const MoviesPage = lazy(() => import("@/components/movies"));
 export default function Movies() {
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-white via-slate-50 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
