@@ -9,7 +9,7 @@ const MovieInfo = lazy(() => import("./pages/MovieInfo"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Actors = lazy(() => import("./pages/Actors"));
 const ApprovedPage = lazy(() => import("./pages/ApprovedPage"));
-import { RootLayout } from "./components";
+const RootLayout = lazy(() => import("./components/layout"));
 
 export const router = createBrowserRouter([
   {
