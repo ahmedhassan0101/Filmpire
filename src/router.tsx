@@ -2,7 +2,7 @@
 import { lazy, Suspense } from "react";
 
 import { createBrowserRouter } from "react-router-dom";
-import RootLayout from "./components/layout/root-layout";
+import RootLayout from "./components/Layout";
 const Movies = lazy(() => import("./pages/Movies"));
 const MovieInfo = lazy(() => import("./pages/MovieInfo"));
 const Profile = lazy(() => import("./pages/Profile"));
